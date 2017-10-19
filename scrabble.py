@@ -9,14 +9,16 @@ import locale, string, gzip
 
 
 
-def diagrama( lan = 'es' ):
 
-    
-    """
-    Creaci\'on del diagrama con las fichas de scrabble
-    """
 
-    # Seleccion de fichas de acuerdo al idioma
+
+
+
+def fichas_lan( lan = 'es' ):
+
+    """
+    Selecci\'on de fichas de acuerdo al idioma
+    """
 
     fichas = {}
 
@@ -47,9 +49,28 @@ def diagrama( lan = 'es' ):
 
         fichas = fch.fichas_ar
 
-                
-        
 
+
+    return fichas
+
+
+
+
+
+
+
+
+
+def diagrama( lan = 'es' ):
+
+    
+    """
+    Creaci\'on del diagrama con las fichas de scrabble
+    """
+
+    # Seleccion de fichas de acuerdo al idioma
+
+    fichas = fichas_lan( lan )
 
 
 
@@ -75,8 +96,6 @@ def diagrama( lan = 'es' ):
 
     
         
-
-
 
     # Creacion de la figura inicial
 
@@ -209,9 +228,30 @@ def checkSec( sec, lan = 'es' ):
 
 
 
-# def countLetters( str )
+def countLetters( word ):
 
-# count +
+    """
+    Conteo de letras en word y asignacion a diccionario
+
+    Devuelve diccionario con cantidad de apariciones
+    """
+    
+    count = {}
+
+    for w in word:
+
+        if w.lower() in count.keys():
+
+            count[w.lower()] = count[w.lower()] + 1
+
+        else:
+
+            count[w.lower()] = 1
+            
+
+    return count
+
+
 
 
 
@@ -263,15 +303,67 @@ def juego( sec, lan = 'es' ):
 
 
 
-    # # B\'usqueda de palabras
+    # B\'usqueda de palabras
  
-    # if not msg:
+    if not msg:
 
-    #     for w in words:
+        
+        secDict = countLetters( sec )
+        
+        
+        for w in words:
 
-    #         if w.decode() == 'zuncho':
+            count = 0
+
+            find = True
+
+            wDict = countLetters( w.decode() )
+
+
+            for l in wDict.keys():
+
+                if l in secDict.keys():
+
+                    if secDict[l] >= wDict[l]:
+
+                        # print('{}  {}  {}  {}'.format(secDict,wDict,l, w))
+                        
+                        count = count + 1
+
+                    else:
+
+                        find = False
+
+                        
+                        
+                else:
+
+                    find = False
+
+
+
+                    
+            # Si la cantidad de letras coincidentes es mayor a dos, y todas las letras de wDict estan en secDict, entonces la palabra w es valida
+                    
+            if count > 1  and  find == True:
+
+
+                # Puntaje para la palabra
+
+                score = 0
+
+                fichas = fichas_lan( lan )
+
+                for l in wDict.keys():
+
+                    score = score + fichas[l][1] * wDict[l]
+
                 
-    #             print(w)
+                
+                msg = msg + '{} : {} puntos\n'.format(w.decode(), score)
+
+                    
+            
         
 
 
