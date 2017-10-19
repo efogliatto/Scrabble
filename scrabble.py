@@ -31,29 +31,22 @@ def diagrama( lan = 'es' ):
     elif lan == 'en' :
 
         fichas = fch.fichas_en
-
-        locale.setlocale(locale.LC_ALL, ('en_US', 'UTF-8'))
                 
 
     elif lan == 'it' :
 
         fichas = fch.fichas_it
 
-        locale.setlocale(locale.LC_ALL, ('en_US', 'UTF-8'))
-
 
     elif lan == 'fr' :
 
         fichas = fch.fichas_fr
-
-        locale.setlocale(locale.LC_ALL, ('en_US', 'UTF-8'))
         
 
     elif lan == 'ar' :
 
         fichas = fch.fichas_ar
 
-        locale.setlocale(locale.LC_ALL, ('en_US', 'UTF-8'))
                 
         
 
@@ -63,13 +56,24 @@ def diagrama( lan = 'es' ):
 
     # Seleccion del ancho del casillero
 
-    nx = 0
+    N = 0
 
     for key in fichas:
 
-        nx = nx + fichas[key][0]
+        if fichas[key] != 'blank':
 
-    nx = int(  np.ceil( np.sqrt(nx) )  )
+            N = N + fichas[key][0]
+
+
+    nx = int(  np.ceil( np.sqrt(N) )  )
+
+    ny = nx
+    
+    if (nx * ny - nx) > N:
+
+        ny = ny - 1
+
+    
         
 
 
@@ -82,7 +86,7 @@ def diagrama( lan = 'es' ):
 
     ax.set_xlim((0,nx))
 
-    ax.set_ylim((0,nx))
+    ax.set_ylim((0,ny))
 
     plt.gca().set_aspect('equal', adjustable='box')
 
@@ -130,12 +134,12 @@ def diagrama( lan = 'es' ):
 
                 # Posicion de la ficha
                 
-                ax.text( 0.5 + idx, 9.5 - idy, k.upper(), ha="center", va="center", size = 15, fontweight = 'bold' )
+                ax.text( 0.5 + idx, ny - 0.5 - idy, k.upper(), ha="center", va="center", size = 15, fontweight = 'bold' )
 
                 
                 # Valor de la ficha
                 
-                ax.text( 0.8 + idx, 9.2 - idy, fichas[k][1], ha="center", va="center", size = 5, fontweight = 'bold' )
+                ax.text( 0.8 + idx, ny - 0.8 - idy, fichas[k][1], ha="center", va="center", size = 5, fontweight = 'bold' )
                 
                 
 
@@ -147,3 +151,55 @@ def diagrama( lan = 'es' ):
         
     
     pass
+
+
+
+
+
+
+
+def juego( sec, lan = 'es' ):
+
+
+    """
+    Resolucion del juego en idioma lan, usando las letras de la secuencia sec
+
+    Devuelve mensaje con info
+    """
+
+    msg = ''
+    
+    
+    # Remocion de comas
+
+    sec = sec.replace(',','')
+
+
+    # Deteccion de caracteres incorrectos o faltantes
+
+    if len(sec) < 7:
+
+        msg = '  [ERROR]  Cantidad incorrecta de caracteres'
+
+
+        
+    else:
+
+        cchar = True
+
+        for c in sec:
+
+            if c not in locale.ascii_string:
+
+                cchar = False
+
+
+
+        if cchar == False:
+
+            msg = 'Caracteres no reconocidos'
+
+
+
+
+    return msg
