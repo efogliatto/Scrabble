@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-import locale
+import locale, string, gzip
 
 
 
@@ -158,6 +158,64 @@ def diagrama( lan = 'es' ):
 
 
 
+def checkSec( sec, lan = 'es' ):
+
+    """
+    Verificaci\'on de la secuencia de letras
+
+    Devuelve la secuencia correcta y un mensaje
+    """
+    
+
+    # Remocion de comas
+
+    newSec = sec.replace(',','')
+
+
+    
+    msg = ''
+
+    # Deteccion de caracteres faltantes
+
+    if len(sec) < 7:
+
+        msg = msg + '  [ERROR]  Cantidad incorrecta de caracteres\n\n'
+
+
+        
+
+    # Deteccion de caracteres incorrectos (de acuerdo al idioma)
+
+    msg2 = ''
+
+    for c in sec:
+
+        if c not in string.ascii_letters:
+
+            msg2 = msg2 + ' ' + c
+
+
+
+    if msg2:
+
+        msg = msg + '  [ERROR]  Caracteres incorrectos para el idioma ' + lan + ':' + msg2 + '\n\n'
+
+
+        
+    return newSec, msg
+
+
+
+
+
+
+# def countLetters( str )
+
+# count +
+
+
+
+
 def juego( sec, lan = 'es' ):
 
 
@@ -167,38 +225,57 @@ def juego( sec, lan = 'es' ):
     Devuelve mensaje con info
     """
 
-    msg = ''
+    newSec, msg = checkSec(sec, lan)
     
+
     
-    # Remocion de comas
-
-    sec = sec.replace(',','')
+    # Resolucion del juego si no hay mensaje de error
 
 
-    # Deteccion de caracteres incorrectos o faltantes
 
-    if len(sec) < 7:
 
-        msg = '  [ERROR]  Cantidad incorrecta de caracteres'
+    # Lectura de la lista de palabras
+    
+    if not msg:
+
+        
+        if lan == 'es':
+
+            with gzip.open('palabras.words.gz', 'rb') as f:
+                
+                words = f.read().splitlines()
+
+                
+
+        elif lan == 'en':
+
+            with gzip.open('palabras_en.words.gz', 'rb') as f:
+                
+                words = f.read().splitlines()
+
+                
+
+        else:
+
+            msg = msg + '  [ERROR]  Idioma ' + lan + ' no disponible\n\n'
+
+
+
+
+
+    # # B\'usqueda de palabras
+ 
+    # if not msg:
+
+    #     for w in words:
+
+    #         if w.decode() == 'zuncho':
+                
+    #             print(w)
+        
 
 
         
-    else:
-
-        cchar = True
-
-        for c in sec:
-
-            if c not in locale.ascii_string:
-
-                cchar = False
-
-
-
-        if cchar == False:
-
-            msg = 'Caracteres no reconocidos'
-
 
 
 
