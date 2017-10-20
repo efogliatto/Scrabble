@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-import locale, string, gzip
+import gzip
 
 
 
@@ -22,36 +22,25 @@ def fichas_lan( lan = 'es' ):
 
     fichas = {}
 
+    alphabet = ''
+
     
     if lan == 'es':
 
         fichas = fch.fichas_es
         
-        locale.setlocale(locale.LC_ALL, ('en_US', 'UTF-8'))
+        alphabet = 'abcdefghijklmnñopqrstuvwxyz'
 
         
     elif lan == 'en' :
 
         fichas = fch.fichas_en
-                
 
-    elif lan == 'it' :
-
-        fichas = fch.fichas_it
-
-
-    elif lan == 'fr' :
-
-        fichas = fch.fichas_fr
-        
-
-    elif lan == 'ar' :
-
-        fichas = fch.fichas_ar
+        alphabet = 'abcdefghijklmnopqrstuvwxyz'                
 
 
 
-    return fichas
+    return fichas, alphabet
 
 
 
@@ -70,7 +59,7 @@ def diagrama( lan = 'es' ):
 
     # Seleccion de fichas de acuerdo al idioma
 
-    fichas = fichas_lan( lan )
+    fichas, alphabet = fichas_lan( lan )
 
 
 
@@ -134,9 +123,9 @@ def diagrama( lan = 'es' ):
     idy = 0
 
     
-    # for k in sorted( fichas.keys(), key=lambda word: [alphabet.index(c) for c in word[0]] ):
+    for k in sorted( fichas.keys(), key=lambda word: [alphabet.index(c) for c in word[0]] ):
 
-    for k in sorted( fichas.keys() ):
+    # for k in sorted( fichas.keys() ):
 
         if k != 'blank' :
 
@@ -188,7 +177,7 @@ def checkSec( sec, lan = 'es' ):
 
     # Remocion de comas
 
-    newSec = sec.replace(',','')
+    newSec = sec.replace(',','').lower()
 
 
     
@@ -196,7 +185,7 @@ def checkSec( sec, lan = 'es' ):
 
     # Deteccion de caracteres faltantes
 
-    if len(sec) < 7:
+    if len(newSec) < 7:
 
         msg = msg + '  [ERROR]  Cantidad incorrecta de caracteres\n\n'
 
@@ -207,9 +196,11 @@ def checkSec( sec, lan = 'es' ):
 
     msg2 = ''
 
-    for c in sec:
+    fichas, alphabet = fichas_lan( lan )
 
-        if c not in string.ascii_letters:
+    for c in newSec:
+
+        if c not in alphabet:
 
             msg2 = msg2 + ' ' + c
 
@@ -271,7 +262,7 @@ def juego( sec, lan = 'es' ):
     
     # Resolucion del juego si no hay mensaje de error
 
-
+    result = {}
 
 
     # Lectura de la lista de palabras
@@ -352,7 +343,7 @@ def juego( sec, lan = 'es' ):
 
                 score = 0
 
-                fichas = fichas_lan( lan )
+                fichas, alphabet = fichas_lan( lan )
 
                 for l in wDict.keys():
 
@@ -361,6 +352,8 @@ def juego( sec, lan = 'es' ):
                 
                 
                 msg = msg + '{} : {} puntos\n'.format(w.decode(), score)
+
+                result[w.decode()] = score
 
                     
             
@@ -371,4 +364,21 @@ def juego( sec, lan = 'es' ):
 
 
 
-    return msg
+    return result, msg
+
+
+
+
+
+
+# def secuencia_rnd( lan = 'es', n = 1 ):
+
+#     """
+#     Determina n secuencias aleatorias
+    
+#     Si durante el sorteo se elige una ficha 'blank', entonces se agregan todas las letras del alfabeto (para pedir su resolucion posterior)
+#     """
+
+#     fic
+    
+    

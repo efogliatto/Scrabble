@@ -15,22 +15,35 @@ if __name__ == "__main__":
     parser.add_argument("--lan", help="Idioma", choices = ['es', 'en', 'it', 'fr', 'ar'], default = 'es')
 
     parser.add_argument("secuencia", help="Secuencia de letras", default = '')
+
+    parser.add_argument("-n", help="Cantidad de secuencias aleatorias", default = 0)
+    
     
     args = parser.parse_args()
 
 
 
-    
+    # Muestra las fichas
     
     if args.fichas:
 
         sc.diagrama( args.lan )
 
 
-    else:
+    # Resuelve para una secuencia por consola
 
-        print( sc.juego( args.secuencia, args.lan ) )
+    elif args.n == 0:
+
+        result, msg = sc.juego( args.secuencia, args.lan )
+        
+        print( msg )
         
 
+
+    # Resuelve para n secuencias aleatorias
+
+    else:
+
+        pass
 
 
