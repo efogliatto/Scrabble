@@ -11,15 +11,15 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description='Resolución de scrabble')
 
-    parser.add_argument("--fichas", help="Impresión de las fichas, sin resolución del juego", action = "store_true")
+    parser.add_argument('-f','--fichas', help='Impresión de las fichas, sin resolución del juego', action = 'store_true', dest='fichas')
 
-    parser.add_argument("--lan", help="Idioma", choices = ['es', 'en'], default = 'es')
+    parser.add_argument('-l','--language', help='Idioma', choices = ['es', 'en'], default = 'es', dest = 'lan')
 
-    parser.add_argument("secuencia", help="Secuencia de letras", default = '', nargs = '?')
+    parser.add_argument('secuencia', help='Secuencia de letras', default = '', nargs = '?')
 
-    parser.add_argument("-n", help="Cantidad de secuencias aleatorias", type = int, default = 0)
+    parser.add_argument('-n', help='Cantidad de secuencias aleatorias', type = int, default = 0)
 
-    parser.add_argument("-o", help="Salida opcional", default = '')
+    parser.add_argument('-o', '--output', help='Salida opcional', default = '', dest = 'o')
     
     
     args = parser.parse_args()
@@ -41,9 +41,17 @@ if __name__ == "__main__":
     elif args.n == 0:
         
         result, msg = sc.juego( args.secuencia, args.lan )
+
+        if not args.o:
         
-        print( msg )
-        
+            print( msg )
+
+        else:
+
+            with open( args.o, 'w' ) as f:
+
+                f.write( msg )
+            
 
         
 
@@ -72,12 +80,22 @@ if __name__ == "__main__":
 
 
 
+        msg = ''
+                    
         for key in global_result:
 
-            print( '{} : {}'.format(key, global_result[key]) )
+            msg = msg + '{} : {}\n'.format(key, global_result[key])
 
                 
 
-            
+        if not args.o:
+        
+            print( msg )
+
+        else:
+
+            with open( args.o, 'w' ) as f:
+
+                f.write( msg )            
 
 
