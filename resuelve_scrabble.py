@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--lan", help="Idioma", choices = ['es', 'en', 'it', 'fr', 'ar'], default = 'es')
 
-    parser.add_argument("secuencia", help="Secuencia de letras", default = '')
+    parser.add_argument("secuencia", help="Secuencia de letras", default = '', nargs = '?')
 
     parser.add_argument("-n", help="Cantidad de secuencias aleatorias", type = int, default = 0)
     

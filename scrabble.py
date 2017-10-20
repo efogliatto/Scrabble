@@ -29,14 +29,18 @@ def fichas_lan( lan = 'es' ):
 
         fichas = fch.fichas_es
         
-        alphabet = 'abcdefghijklmnñopqrstuvwxyz'
+        # alphabet = 'abcdefghijklmnñopqrstuvwxyz'
+
+        alphabet = ['a','b','c','ch','d','e','f','g','h','i','j','l','ll','m','n','ñ','o','p','q','r','rr','s','t','u','v','x','y','z']
 
         
     elif lan == 'en' :
 
         fichas = fch.fichas_en
 
-        alphabet = 'abcdefghijklmnopqrstuvwxyz'                
+        # alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+        alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']        
 
 
 
@@ -122,32 +126,28 @@ def diagrama( lan = 'es' ):
 
     idy = 0
 
-    
-    for k in sorted( fichas.keys(), key=lambda word: [alphabet.index(c) for c in word[0]] ):
 
-    # for k in sorted( fichas.keys() ):
+    for k in alphabet:
 
-        if k != 'blank' :
+        for i in range( fichas[k][0] ):
 
-            for i in range( fichas[k][0] ):
+            idx = idx + 1
 
-                idx = idx + 1
+            if idx > nx-1:
 
-                if idx > nx-1:
+                idx = 0
 
-                    idx = 0
-
-                    idy = idy + 1
+                idy = idy + 1
 
 
-                # Posicion de la ficha
+            # Posicion de la ficha
                 
-                ax.text( 0.5 + idx, ny - 0.5 - idy, k.upper(), ha="center", va="center", size = 15, fontweight = 'bold' )
+            ax.text( 0.5 + idx, ny - 0.5 - idy, k.upper(), ha="center", va="center", size = 15, fontweight = 'bold' )
 
                 
-                # Valor de la ficha
+            # Valor de la ficha
                 
-                ax.text( 0.8 + idx, ny - 0.8 - idy, fichas[k][1], ha="center", va="center", size = 5, fontweight = 'bold' )
+            ax.text( 0.8 + idx, ny - 0.8 - idy, fichas[k][1], ha="center", va="center", size = 5, fontweight = 'bold' )
                 
                 
 
