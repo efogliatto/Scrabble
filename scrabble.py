@@ -54,7 +54,7 @@ def fichas_lan( lan = 'es' ):
 
 
 
-def diagrama( lan = 'es' ):
+def diagrama( lan = 'es', out = '' ):
 
     
     """
@@ -152,15 +152,45 @@ def diagrama( lan = 'es' ):
                 
 
 
+
+    if not out:
     
-    plt.show()
-    
+        plt.show()
+
+    else:
+
+        plt.savefig( out )
+        
 
         
     
     pass
 
 
+
+
+def countLetters( word ):
+
+    """
+    Conteo de letras en word y asignacion a diccionario
+
+    Devuelve diccionario con cantidad de apariciones
+    """
+    
+    count = {}
+
+    for w in word:
+
+        if w.lower() in count.keys():
+
+            count[w.lower()] = count[w.lower()] + 1
+
+        else:
+
+            count[w.lower()] = 1
+            
+
+    return count
 
 
 
@@ -171,7 +201,7 @@ def checkSec( sec, lan = 'es' ):
     """
     Verificaci\'on de la secuencia de letras
 
-    Devuelve la secuencia correcta y un mensaje
+    Devuelve la secuencia correcta como lista de diccionarios y un mensaje
     """
     
 
@@ -211,6 +241,7 @@ def checkSec( sec, lan = 'es' ):
         msg = msg + '  [ERROR]  Caracteres incorrectos para el idioma ' + lan + ':' + msg2 + '\n\n'
 
 
+    
         
     return newSec, msg
 
@@ -219,28 +250,7 @@ def checkSec( sec, lan = 'es' ):
 
 
 
-def countLetters( word ):
 
-    """
-    Conteo de letras en word y asignacion a diccionario
-
-    Devuelve diccionario con cantidad de apariciones
-    """
-    
-    count = {}
-
-    for w in word:
-
-        if w.lower() in count.keys():
-
-            count[w.lower()] = count[w.lower()] + 1
-
-        else:
-
-            count[w.lower()] = 1
-            
-
-    return count
 
 
 
@@ -348,6 +358,21 @@ def juego( sec, lan = 'es' ):
                 for l in wDict.keys():
 
                     score = score + fichas[l][1] * wDict[l]
+
+
+                # Correccion de puntos por ch, rr y ll
+
+                if 'ch' in w.decode():
+
+                    score = score - 2
+
+                elif 'll' in w.decode():
+
+                    score = score + 6
+
+                elif 'rr' in w.decode():
+
+                    score = score + 6                    
 
                 
                 

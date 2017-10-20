@@ -13,11 +13,13 @@ if __name__ == "__main__":
 
     parser.add_argument("--fichas", help="Impresión de las fichas, sin resolución del juego", action = "store_true")
 
-    parser.add_argument("--lan", help="Idioma", choices = ['es', 'en', 'it', 'fr', 'ar'], default = 'es')
+    parser.add_argument("--lan", help="Idioma", choices = ['es', 'en'], default = 'es')
 
     parser.add_argument("secuencia", help="Secuencia de letras", default = '', nargs = '?')
 
     parser.add_argument("-n", help="Cantidad de secuencias aleatorias", type = int, default = 0)
+
+    parser.add_argument("-o", help="Salida opcional", default = '')
     
     
     args = parser.parse_args()
@@ -29,7 +31,7 @@ if __name__ == "__main__":
     
     if args.fichas:
 
-        sc.diagrama( args.lan )
+        sc.diagrama( args.lan, args.o )
 
 
         
@@ -37,7 +39,7 @@ if __name__ == "__main__":
     # Resuelve para una secuencia por consola
 
     elif args.n == 0:
-
+        
         result, msg = sc.juego( args.secuencia, args.lan )
         
         print( msg )
