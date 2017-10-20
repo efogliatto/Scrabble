@@ -6,6 +6,7 @@ import argparse
 if __name__ == "__main__":
 
 
+    
     # Argumentos de consola
     
     parser = argparse.ArgumentParser(description='Resolución de scrabble')
@@ -16,12 +17,13 @@ if __name__ == "__main__":
 
     parser.add_argument("secuencia", help="Secuencia de letras", default = '')
 
-    parser.add_argument("-n", help="Cantidad de secuencias aleatorias", default = 0)
+    parser.add_argument("-n", help="Cantidad de secuencias aleatorias", type = int, default = 0)
     
     
     args = parser.parse_args()
 
 
+    
 
     # Muestra las fichas
     
@@ -29,6 +31,8 @@ if __name__ == "__main__":
 
         sc.diagrama( args.lan )
 
+
+        
 
     # Resuelve para una secuencia por consola
 
@@ -39,11 +43,39 @@ if __name__ == "__main__":
         print( msg )
         
 
+        
 
     # Resuelve para n secuencias aleatorias
 
     else:
 
-        pass
+        global_result = {}
+
+        for n in range( args.n ):
+        
+            rndSec = sc.secuencia_rnd( args.lan )
+            
+        
+            for sec in rndSec:
+
+                result, msg = sc.juego( sec, args.lan )
+
+                
+                # Se agrega solo el maximo puntaje para esta secuencia
+
+                if result:
+                    
+                    global_result[ sec ] = sorted(result.items(), key = lambda x : x[1], reverse = True)[0]
+
+
+
+
+        for key in global_result:
+
+            print( '{} : {}'.format(key, global_result[key]) )
+
+                
+
+            
 
 

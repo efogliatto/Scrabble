@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-import gzip
+import gzip, random
 
 
 
@@ -371,14 +371,130 @@ def juego( sec, lan = 'es' ):
 
 
 
-# def secuencia_rnd( lan = 'es', n = 1 ):
+def secuencia_rnd( lan = 'es' ):
 
-#     """
-#     Determina n secuencias aleatorias
     
-#     Si durante el sorteo se elige una ficha 'blank', entonces se agregan todas las letras del alfabeto (para pedir su resolucion posterior)
-#     """
+    """
+    Determina n secuencias aleatorias
+    
+    Si durante el sorteo se elige una ficha 'blank', entonces se agregan todas las letras del alfabeto (para pedir su resolucion posterior)
+    """
 
-#     fic
     
+    fichas, alphabet = fichas_lan( lan )
+
+
+        
+    # Acomodan las fichas por secuencia
+
+    chain = []
     
+    for k in sorted( fichas.keys(), key=lambda word: [alphabet.index(c) for c in word[0]] ):
+
+        for rep in range( fichas[k][0] ):
+
+            chain.append(k)
+
+
+
+    # Posiciones enteras aleatorias no repetidas
+
+    rnd = []
+
+    while( len(rnd) < 7 ):
+
+        num = random.randint(0, len(chain) - 1)
+
+        if not num in rnd:
+
+            rnd.append(num)
+
+
+            
+    # Secuencia aleatoria
+
+    sec = []
+
+    for r in rnd:
+
+        sec.append( chain[r] )
+
+
+
+
+        
+    # Verificacion de posicion de 'blank'
+
+    bpos = []
+    
+    for i, s in enumerate(sec):
+
+        if s == 'blank':
+
+            bpos.append(i)
+
+
+            
+    # Incorporacion de la secuencia sin 'blank'
+
+    rndSec = []
+    
+    if not bpos:
+
+        str = ''
+
+        for s in sec:
+
+            str = str + s
+            
+        rndSec.append(str)
+
+
+
+    # Aparicion simple de blank
+
+    elif len(bpos) == 1:
+
+        nsec = sec
+
+        for c in alphabet:
+
+            nsec[ bpos[0] ] = c
+
+            str = ''
+
+            for s in nsec:
+
+                str = str + s
+            
+                rndSec.append(str)
+
+
+    # Doble aparicion de blank
+                
+    elif len(bpos) == 2:
+
+        nsec = sec
+
+        for c in alphabet:
+
+            nsec[ bpos[0] ] = c
+
+
+            for cc in alphabet:
+
+                nsec[ bpos[1] ] = cc
+                
+
+                str = ''
+
+                for s in nsec:
+
+                    str = str + s
+            
+                    rndSec.append(str)
+
+
+        
+        
+    return rndSec
