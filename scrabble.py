@@ -173,6 +173,9 @@ def countLetters( word, lan = 'es' ):
 
     Devuelve diccionario con cantidad de apariciones
     """
+
+
+    # Cuenta las letras de manera individual
     
     count = {}
 
@@ -189,6 +192,7 @@ def countLetters( word, lan = 'es' ):
 
 
     # En el caso de idioma espanol, correccion por ch, ll y rr. Como solo hay una ficha de estas, se corrige por una unica aparicion
+    # Por ejemplo, si aparece 'ch' se agrega esta entrada al diccionario y resta una cuenta a 'c' y 'h'
 
     if lan == 'es':
 
@@ -334,17 +338,17 @@ def checkSec( sec, lan = 'es' ):
 
 
 
-def juego( sec, lan = 'es' ):
+def juego( secDict, lan = 'es' ):
 
 
     """
-    Resolucion del juego en idioma lan, usando las letras de la secuencia sec
+    Resolucion del juego en idioma lan, usando las letras del diccionario secDict
 
     Devuelve mensaje con info
     """
 
-    newSec, msg = checkSec(sec, lan)
-    
+    # newSec, msg = checkSec(sec, lan)
+    msg = ''
 
     
     # Resolucion del juego si no hay mensaje de error
@@ -385,9 +389,7 @@ def juego( sec, lan = 'es' ):
  
     if not msg:
 
-        
-        secDict = countLetters( sec, lan )
-        
+                
         
         for w in words:
 
@@ -435,20 +437,6 @@ def juego( sec, lan = 'es' ):
                     score = score + fichas[l][1] * wDict[l]
 
 
-                # Correccion de puntos por ch, rr y ll
-
-                if 'ch' in w.decode():
-
-                    score = score - 2
-
-                elif 'll' in w.decode():
-
-                    score = score + 6
-
-                elif 'rr' in w.decode():
-
-                    score = score + 6                 
-                    
 
                 
                 
