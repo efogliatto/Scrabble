@@ -244,91 +244,6 @@ def countLetters( word, lan = 'es' ):
 
 
 
-def checkSec( sec, lan = 'es' ):
-
-    """
-    Verificaci\'on de la secuencia de letras
-    Cuenta cantidad de caracteres y si pertenecen al alfabeto correcpondiente
-    Para el caso espanol, asume que si aparece por ej. 'ch', se toma como 'ch' y no como 'c' y 'h'
-
-    Devuelve la secuencia correcta y un mensaje
-    El mensaje esta vacio si la secuencia es correcta
-    """
-    
-
-    # Remocion de comas
-
-    newSec = sec.replace(',','').lower()
-
-
-    
-    msg = ''
-
-
-
-    
-    # Deteccion de cantidad incorrecta de caracteres. Hay que tener precaucion con los caracteres dobles del espanol
-
-    if lan == 'en':
-
-        if len(newSec) != 7:
-
-            msg = msg + '  [ERROR]  Cantidad incorrecta de caracteres\n\n'
-
-
-    else:
-
-        count = 0
-
-        # if 'ch' in newSec:
-
-        #     count = count + 1
-
-        # if 'll' in newSec:
-
-        #     count = count + 1
-
-        # if 'rr' in newSec:
-
-        #     count = count + 1
-
-
-
-        if (len(newSec) - count) != 7: 
-
-            msg = msg + '  [ERROR]  Cantidad incorrecta de caracteres\n\n'
-
-
-            
-
-        
-
-    # Deteccion de caracteres incorrectos (de acuerdo al idioma)
-
-    msg2 = ''
-
-    fichas, alphabet = fichas_lan( lan )
-
-    for c in newSec:
-
-        if c not in alphabet:
-
-            msg2 = msg2 + ' ' + c
-
-
-
-    if msg2:
-
-        msg = msg + '  [ERROR]  Caracteres incorrectos para el idioma ' + lan + ':' + msg2 + '\n\n'
-
-
-    
-        
-    return newSec, msg
-
-
-
-
 
 
 
@@ -533,21 +448,25 @@ def juego( secDict, lan = 'es' ):
 
 
 
+
 def secuencia_rnd( lan = 'es' ):
 
     
     """
-    Determina n secuencias aleatorias
-    
-    Si durante el sorteo se elige una ficha 'blank', entonces se agregan todas las letras del alfabeto (para pedir su resolucion posterior)
+    Determina una secuencia aleatoria    
+    Si durante el sorteo se eligen una fichas 'blank', entonces se agregan todas las letras del alfabeto (para pedir su resolucion posterior)
+
+    Devuelve una lista de diccionarios, cada uno listo para usar en juego()
     """
 
+
+    # Fichas para este alfabeto
     
     fichas, alphabet = fichas_lan( lan )
 
 
         
-    # Acomodan las fichas por secuencia
+    # Se acomodan las fichas por secuencia
 
     chain = []
     
@@ -572,89 +491,121 @@ def secuencia_rnd( lan = 'es' ):
             rnd.append(num)
 
 
-            
-    # Secuencia aleatoria
 
-    sec = []
+
+    # Generacion del diccionario inicial aleatorio
+
+    sdict = {}
 
     for r in rnd:
 
-        sec.append( chain[r] )
+        lt = chain[r]
+
+        if lt in sdict.keys():
+
+            sdict[lt] = sdict[lt] + 1
+
+        else:
+
+            sdict[lt] = 1
 
 
 
 
-        
-    # Verificacion de posicion de 'blank'
 
-    bpos = []
-    
-    for i, s in enumerate(sec):
-
-        if s == 'blank':
-
-            bpos.append(i)
-
-
-            
-    # Incorporacion de la secuencia sin 'blank'
+    # Verificacion de la existencia de fichas 'blank'
 
     rndSec = []
+
+
+    sdict = {'f': 1, 'r': 1, 'j': 1, 'a': 1, 's': 2, 'blank': 1}
     
-    if not bpos:
 
-        str = ''
+    # No hay fichas 'blank'
+    
+    if 'blank' not in sdict.keys():
 
-        for s in sec:
+        rndSec.append(sdict)
 
-            str = str + s
-            
-        rndSec.append(str)
+        
 
+    else:
 
+        # Copia de los elementos distintos de blank
+        
+        newSec = {}
+        
+        for key in sdict:
 
-    # Aparicion simple de blank
+            if key != 'blank':
 
-    elif len(bpos) == 1:
-
-        nsec = sec
-
-        for c in alphabet:
-
-            nsec[ bpos[0] ] = c
-
-            str = ''
-
-            for s in nsec:
-
-                str = str + s
-            
-                rndSec.append(str)
+                newSec[key] = sdict[key]
 
 
-    # Doble aparicion de blank
                 
-    elif len(bpos) == 2:
-
-        nsec = sec
-
-        for c in alphabet:
-
-            nsec[ bpos[0] ] = c
-
-
-            for cc in alphabet:
-
-                nsec[ bpos[1] ] = cc
+        # 'blank' aparece solo una vez
+                
+        if sdict['blank'] == 1:
                 
 
-                str = ''
+            # Agregamos una nueva letra del alfabeto
 
-                for s in nsec:
-
-                    str = str + s
+            for lt in alphabet:
             
-                    rndSec.append(str)
+                nndict = newSec.copy()
+
+                if lt in nndict.keys():
+
+                    nndict[lt] = nndict[lt] + 1
+
+                else:
+
+                    nndict[lt] = 1
+
+
+                rndSec.append( nndict )
+            
+            
+
+                
+        # 'blank' aparece solo una vez
+                
+        elif sdict['blank'] == 2:
+                
+
+            # Agregamos una nueva letra del alfabeto
+
+            for lt in alphabet:
+
+                for nlt in alphabet:
+            
+                    nndict = newSec.copy()
+
+                    if lt in nndict.keys():
+
+                        nndict[lt] = nndict[lt] + 1
+
+                    else:
+
+                        nndict[lt] = 1
+
+                        
+                    if nlt in nndict.keys():
+
+                        nndict[nlt] = nndict[nlt] + 1
+
+                    else:
+
+                        nndict[nlt] = 1
+
+
+                    
+
+                    rndSec.append( nndict )
+                
+        
+
+
 
 
         
