@@ -28,8 +28,6 @@ def fichas_lan( lan = 'es' ):
     if lan == 'es':
 
         fichas = fch.fichas_es
-        
-        # alphabet = 'abcdefghijklmnñopqrstuvwxyz'
 
         alphabet = ['a','b','c','ch','d','e','f','g','h','i','j','l','ll','m','n','ñ','o','p','q','r','rr','s','t','u','v','x','y','z']
 
@@ -37,8 +35,6 @@ def fichas_lan( lan = 'es' ):
     elif lan == 'en' :
 
         fichas = fch.fichas_en
-
-        # alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
         alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']        
 
@@ -169,7 +165,8 @@ def diagrama( lan = 'es', out = '' ):
 
 
 
-def countLetters( word ):
+
+def countLetters( word, lan = 'es' ):
 
     """
     Conteo de letras en word y asignacion a diccionario
@@ -190,6 +187,53 @@ def countLetters( word ):
             count[w.lower()] = 1
             
 
+
+    # En el caso de idioma espanol, correccion por ch, ll y rr. Como solo hay una ficha de estas, se corrige por una unica aparicion
+
+    if lan == 'es':
+
+
+        if 'ch' in word:
+
+            count['ch'] = 1
+
+            count['c'] = count['c'] - 1
+
+            if count['c'] == 0:
+
+                count.pop('c')
+
+            count['h'] = count['h'] - 1
+
+            if count['h'] == 0:
+
+                count.pop('h')
+
+
+        if 'rr' in word: 
+
+            count['rr'] = 1
+
+            count['r'] = count['r'] - 2
+
+            if count['r'] == 0:
+
+                count.pop('r')
+
+
+            
+        if 'll' in word:
+
+            count['ll'] = 1
+
+            count['l'] = count['l'] - 2
+
+            if count['l'] == 0:
+
+                count.pop('l')
+            
+
+            
     return count
 
 
@@ -200,8 +244,11 @@ def checkSec( sec, lan = 'es' ):
 
     """
     Verificaci\'on de la secuencia de letras
+    Cuenta cantidad de caracteres y si pertenecen al alfabeto correcpondiente
+    Para el caso espanol, asume que si aparece por ej. 'ch', se toma como 'ch' y no como 'c' y 'h'
 
-    Devuelve la secuencia correcta como lista de diccionarios y un mensaje
+    Devuelve la secuencia correcta y un mensaje
+    El mensaje esta vacio si la secuencia es correcta
     """
     
 
@@ -213,12 +260,42 @@ def checkSec( sec, lan = 'es' ):
     
     msg = ''
 
-    # Deteccion de caracteres faltantes
 
-    if len(newSec) < 7:
 
-        msg = msg + '  [ERROR]  Cantidad incorrecta de caracteres\n\n'
+    
+    # Deteccion de cantidad incorrecta de caracteres. Hay que tener precaucion con los caracteres dobles del espanol
 
+    if lan == 'en':
+
+        if len(newSec) != 7:
+
+            msg = msg + '  [ERROR]  Cantidad incorrecta de caracteres\n\n'
+
+
+    else:
+
+        count = 0
+
+        # if 'ch' in newSec:
+
+        #     count = count + 1
+
+        # if 'll' in newSec:
+
+        #     count = count + 1
+
+        # if 'rr' in newSec:
+
+        #     count = count + 1
+
+
+
+        if (len(newSec) - count) != 7: 
+
+            msg = msg + '  [ERROR]  Cantidad incorrecta de caracteres\n\n'
+
+
+            
 
         
 
@@ -309,7 +386,7 @@ def juego( sec, lan = 'es' ):
     if not msg:
 
         
-        secDict = countLetters( sec )
+        secDict = countLetters( sec, lan )
         
         
         for w in words:
@@ -318,7 +395,7 @@ def juego( sec, lan = 'es' ):
 
             find = True
 
-            wDict = countLetters( w.decode() )
+            wDict = countLetters( w.decode(), lan )
 
 
             for l in wDict.keys():
@@ -326,8 +403,6 @@ def juego( sec, lan = 'es' ):
                 if l in secDict.keys():
 
                     if secDict[l] >= wDict[l]:
-
-                        # print('{}  {}  {}  {}'.format(secDict,wDict,l, w))
                         
                         count = count + 1
 
@@ -372,7 +447,8 @@ def juego( sec, lan = 'es' ):
 
                 elif 'rr' in w.decode():
 
-                    score = score + 6                    
+                    score = score + 6                 
+                    
 
                 
                 
