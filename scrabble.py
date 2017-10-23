@@ -18,6 +18,8 @@ def fichas_lan( lan = 'es' ):
 
     """
     Selecci\'on de fichas de acuerdo al idioma
+
+    Devuelve las fichas y un alfabeto (ya ordenado)
     """
 
     fichas = {}
@@ -181,6 +183,32 @@ def countLetters( word, lan = 'es' ):
 
     for w in word:
 
+
+        # Remocion de acentos para idioma espanol
+
+        if lan == 'es':
+
+            if w == 'á':
+
+                w = 'a'
+
+            if w == 'é':
+
+                w = 'e'
+
+            if w == 'í':
+
+                w = 'i'                
+
+            if w == 'ó':
+
+                w = 'o'
+
+            if w == 'ú':
+
+                w = 'u'
+        
+
         if w.lower() in count.keys():
 
             count[w.lower()] = count[w.lower()] + 1
@@ -329,6 +357,10 @@ def secToDict( sec, lan = 'es' ):
 
 def dictToSec( sdict ):
 
+    """
+    Toma un diccionario de letras, y devuelve un string
+    """
+    
     s = ''
 
     for key in sdict.keys():
