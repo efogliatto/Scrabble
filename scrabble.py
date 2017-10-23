@@ -252,6 +252,8 @@ def countLetters( word, lan = 'es' ):
 
 
 
+
+
 def secToDict( sec, lan = 'es' ):
 
     
@@ -321,6 +323,20 @@ def secToDict( sec, lan = 'es' ):
     return sdict, msg
 
 
+
+
+
+
+def dictToSec( sdict ):
+
+    s = ''
+
+    for key in sdict.keys():
+
+        s = s + sdict[key] * key
+
+
+    return s
 
 
 
@@ -517,8 +533,6 @@ def secuencia_rnd( lan = 'es' ):
 
     rndSec = []
 
-
-    sdict = {'f': 1, 'r': 1, 'j': 1, 'a': 1, 's': 2, 'blank': 1}
     
 
     # No hay fichas 'blank'
@@ -543,6 +557,7 @@ def secuencia_rnd( lan = 'es' ):
 
 
                 
+                
         # 'blank' aparece solo una vez
                 
         if sdict['blank'] == 1:
@@ -565,7 +580,8 @@ def secuencia_rnd( lan = 'es' ):
 
                 rndSec.append( nndict )
             
-            
+
+                
 
                 
         # 'blank' aparece solo una vez

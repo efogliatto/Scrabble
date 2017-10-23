@@ -91,40 +91,48 @@ if __name__ == "__main__":
         global_result = {}
 
         for n in range( args.n ):
+
+            local_result = {}
         
             rndSec = sc.secuencia_rnd( args.lan )
             
-        
+
+            # Resolucion para cada secuencia de la lista rndSec
+            
             for sec in rndSec:
 
                 result, msg = sc.juego( sec, args.lan )
 
                 
+                
                 # Se agrega solo el maximo puntaje para esta secuencia
 
                 if result:
+
+                    local_result[ sc.dictToSec(sec) ] = sorted(result.items(), key = lambda x : x[1], reverse = True)[0]
+
+
+            
+
+
+
+
+        # msg = ''
                     
-                    global_result[ sec ] = sorted(result.items(), key = lambda x : x[1], reverse = True)[0]
+        # for key in global_result:
 
-
-
-
-        msg = ''
-                    
-        for key in global_result:
-
-            msg = msg + '{} : {}\n'.format(key, global_result[key])
+        #     msg = msg + '{} : {}\n'.format(key, global_result[key])
 
                 
 
-        if not args.o:
+        # if not args.o:
         
-            print( msg )
+        #     print( msg )
 
-        else:
+        # else:
 
-            with open( args.o, 'w' ) as f:
+        #     with open( args.o, 'w' ) as f:
 
-                f.write( msg )            
+        #         f.write( msg )            
 
 
