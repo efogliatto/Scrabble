@@ -337,6 +337,80 @@ def checkSec( sec, lan = 'es' ):
 
 
 
+def secToDict( sec, lan = 'es' ):
+
+    
+    """
+    Verificaci\'on de la secuencia de letras
+    Cuenta cantidad de caracteres y si pertenecen al alfabeto correcpondiente
+    Para el caso espanol, asume que si aparece por ej. 'ch', se toma como 'ch' y no como 'c' y 'h'
+
+    Devuelve un diccionario con la cuenta de letras y un mensaje
+    El mensaje esta vacio si la secuencia es correcta
+    """
+    
+
+    # Remocion de comas
+
+    newSec = sec.replace(',','').lower()
+    
+    msg = ''
+
+
+
+    
+    # Deteccion de caracteres incorrectos (de acuerdo al idioma)
+
+    msg2 = ''
+
+    fichas, alphabet = fichas_lan( lan )
+
+    for c in newSec:
+
+        if c not in alphabet:
+
+            msg2 = msg2 + ' ' + c
+
+
+    if msg2:
+
+        msg = msg + '\n  [ERROR]  Caracteres incorrectos para el idioma ' + lan + ':' + msg2
+
+
+
+        
+
+
+    # Conversion a diccionario
+
+    sdict = countLetters( newSec, lan )
+
+    count = 0
+
+    for key in sdict:
+
+        count = count + sdict[key]
+        
+
+    if count != 7:
+    
+        msg = msg + '\n  [ERROR]  Cantidad incorrecta de caracteres'    
+    
+
+
+    if msg:
+
+        msg = msg + '\n'
+        
+        
+    return sdict, msg
+
+
+
+
+
+
+
 
 def juego( secDict, lan = 'es' ):
 
@@ -347,7 +421,6 @@ def juego( secDict, lan = 'es' ):
     Devuelve mensaje con info
     """
 
-    # newSec, msg = checkSec(sec, lan)
     msg = ''
 
     

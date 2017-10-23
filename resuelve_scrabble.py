@@ -26,8 +26,12 @@ if __name__ == "__main__":
 
 
     
+    #########################
+    
+    # Solo muestra las fichas
 
-    # Muestra las fichas
+    ########################
+
     
     if args.fichas:
 
@@ -36,11 +40,29 @@ if __name__ == "__main__":
 
         
 
+    #########################################
+
     # Resuelve para una secuencia por consola
 
+    #########################################
+    
+    
     elif args.n == 0:
+
         
-        result, msg = sc.juego( args.secuencia, args.lan )
+        # Convierte la secuencia a diccionario
+        
+        sdict, msg = sc.secToDict( args.secuencia, args.lan )
+
+        
+        # Resuelve si no hay mensaje de error
+        
+        if not msg:
+        
+            result, msg = sc.juego( sdict, args.lan )
+
+
+        # Impresion de mensaje
 
         if not args.o:
         
@@ -53,9 +75,16 @@ if __name__ == "__main__":
                 f.write( msg )
             
 
+                
         
 
+    #######################################                
+                
     # Resuelve para n secuencias aleatorias
+
+    #######################################
+
+        
 
     else:
 
