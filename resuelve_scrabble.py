@@ -20,12 +20,21 @@ if __name__ == "__main__":
     parser.add_argument('-n', help='Cantidad de secuencias aleatorias', type = int, default = 0)
 
     parser.add_argument('-o', '--output', help='Salida opcional', default = '', dest = 'o')
+
+    parser.add_argument('-s','--estadistica', help='Resuelve s secuencias aleatorias y realiza un hisograma', type = int, default = 0, dest = 's')
     
     
     args = parser.parse_args()
 
+    
+    # Si resuelve n veces, no se hace estadistica
+    
+    if args.n != 0:
+
+        args.s = 0
 
 
+        
     
     #########################
     
@@ -48,7 +57,7 @@ if __name__ == "__main__":
     #########################################
     
     
-    elif args.n == 0:
+    elif args.n == 0   and   args.s == 0 :
 
         
         # Convierte la secuencia a diccionario
@@ -88,7 +97,7 @@ if __name__ == "__main__":
 
         
 
-    else:
+    elif args.n != 0:
 
         global_result = []
 
@@ -128,7 +137,7 @@ if __name__ == "__main__":
                     
         for key in global_result:
 
-            msg = msg + '{} : {} puntos\n'.format(key[0], key[2])
+            msg = msg + '{} : {} puntos\n'.format(key[1], key[2])
 
                 
 
@@ -143,3 +152,11 @@ if __name__ == "__main__":
                 f.write( msg )            
 
 
+
+
+
+    if args.s != 0:
+
+        # Histograma. Puntaje total por tiro
+
+        sc.hist_palabras( args.s, args.lan, args.o )

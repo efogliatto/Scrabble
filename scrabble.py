@@ -659,3 +659,91 @@ def secuencia_rnd( lan = 'es' ):
         
         
     return rndSec
+
+
+
+
+
+
+
+def hist_palabras( s, lan = 'es', out = '' ):
+
+    """
+    Realiza un histograma con el puntaje m\'aximo de s tiros aleatorios
+    No se hace con s palabras, ya que tiros con 'blank' generan multiples secuencias posibles    
+    """
+
+    
+    global_score = []   
+
+        
+    for n in range( s ):
+          
+        maxScore = 0
+
+        
+        # Secuencia aleatoria (lista de secuencias si durante el sorteo salen fichas blank)
+            
+        rndSec = secuencia_rnd( lan )
+            
+
+        # Resolucion para cada secuencia de la lista rndSec
+            
+        for sec in rndSec:
+
+            result, msg = juego( sec, lan )
+                
+                
+            # Se agrega solo el maximo puntaje para esta secuencia
+
+            if result:
+
+                maxItem = max( result.values() )
+                    
+                if maxItem >= maxScore  :
+
+                    maxScore = maxItem
+
+
+                    
+        global_score.append( maxScore )
+
+
+                
+
+
+
+
+    # Histograma
+
+
+    fig, axs = plt.subplots()
+
+    nbins = 20
+
+    axs.grid()
+    
+    axs.hist( global_score, nbins, facecolor = 'r', rwidth = 0.9 )
+
+    axs.set_xlabel('Puntaje máximo')
+
+    axs.set_ylabel('Repeticiones')
+
+    axs.set_title('Histograma para {} secuencias'.format(s))
+
+    
+
+
+      
+    
+    if not out:
+    
+        plt.show()
+
+    else:
+
+        plt.savefig( out )
+        
+    
+
+    pass
