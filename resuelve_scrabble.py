@@ -25,6 +25,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
 
+
     
     #########################
     
@@ -76,6 +77,7 @@ if __name__ == "__main__":
             
 
                 
+                
         
 
     #######################################                
@@ -88,12 +90,16 @@ if __name__ == "__main__":
 
     else:
 
-        global_result = {}
+        global_result = []
 
+        
         for n in range( args.n ):
 
-            local_result = {}
-        
+            global_result.append( ('','',0) )
+            
+
+            # Secuencia aleatoria (lista de secuencias si durante el sorteo salen fichas blank)
+            
             rndSec = sc.secuencia_rnd( args.lan )
             
 
@@ -102,37 +108,38 @@ if __name__ == "__main__":
             for sec in rndSec:
 
                 result, msg = sc.juego( sec, args.lan )
-
                 
                 
                 # Se agrega solo el maximo puntaje para esta secuencia
 
                 if result:
 
-                    local_result[ sc.dictToSec(sec) ] = sorted(result.items(), key = lambda x : x[1], reverse = True)[0]
+                    maxitem = sorted(result.items(), key = lambda x : x[1], reverse = True)[0]
+                    
+                    if maxitem[1] >= global_result[-1][2]  :
+
+                        global_result[-1] = ( sc.dictToSec(sec), maxitem[0], maxitem[1] )
 
 
+                        
             
 
-
-
-
-        # msg = ''
+        msg = ''
                     
-        # for key in global_result:
+        for key in global_result:
 
-        #     msg = msg + '{} : {}\n'.format(key, global_result[key])
+            msg = msg + '{} : {} puntos\n'.format(key[0], key[2])
 
                 
 
-        # if not args.o:
+        if not args.o:
         
-        #     print( msg )
+            print( msg )
 
-        # else:
+        else:
 
-        #     with open( args.o, 'w' ) as f:
+            with open( args.o, 'w' ) as f:
 
-        #         f.write( msg )            
+                f.write( msg )            
 
 
