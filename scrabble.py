@@ -8,6 +8,8 @@ import gzip, random
 
 from matplotlib.ticker import MaxNLocator
 
+import collections as col
+
 
 
 
@@ -741,39 +743,63 @@ def hist_palabras( s, words, lan = 'es', out = '' ):
 
 
 
-    # Histograma
+    # # Histograma
 
+    # print(global_score)
 
-    fig, axs = plt.subplots()
+    # count = col.Counter(global_score)
 
-    nbins = 20
+    # print(count)
 
-    axs.grid()
+    # for key, val in count:
+
+    #     print('{} {}'.format(val, count))
+
+    # print( [ x[0] for x in col.Counter(global_score)] )
+
+    # print( [ x[1] for x in col.Counter(global_score)] )
     
-    axs.hist( global_score, nbins, facecolor = 'r', rwidth = 0.9 )
 
-    axs.yaxis.set_major_locator(MaxNLocator(integer=True))
-
-    axs.xaxis.set_major_locator(MaxNLocator(integer=True))
     
-    axs.set_xlabel('Puntaje máximo')
+    
+    # fig, axs = plt.subplots()
 
-    axs.set_ylabel('Repeticiones')
+    # bins = [ x for x in set(global_score) ] # 1 barra por numero
 
-    axs.set_title('Histograma para {} secuencias'.format(s))
+    # print(bins)
+
+    # axs.grid()
+    
+    # axs.hist( global_score, bins, facecolor = 'r', rwidth = 0.9, align = 'left' )
+
+    # axs.set_xticks(bins[:-1])
+
+    # # axs.set_xticks( [] )
+
+    # # axs.set_xticklabels( [ x for x in set(global_score) ] )
+
+    # axs.yaxis.set_major_locator(MaxNLocator(integer=True))
+
+    # axs.xaxis.set_major_locator(MaxNLocator(integer=True))
+    
+    # axs.set_xlabel('Puntaje máximo')
+
+    # axs.set_ylabel('Repeticiones')
+
+    # axs.set_title('Histograma para {} secuencias'.format(s))
 
     
 
 
       
     
-    if not out:
+    # if not out:
     
-        plt.show()
+    #     plt.show()
 
-    else:
+    # else:
 
-        plt.savefig( out )
+    #     plt.savefig( out )
         
     
 
