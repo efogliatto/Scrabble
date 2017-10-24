@@ -294,6 +294,7 @@ def secToDict( sec, lan = 'es' ):
     Verificaci\'on de la secuencia de letras
     Cuenta cantidad de caracteres y si pertenecen al alfabeto correcpondiente
     Para el caso espanol, asume que si aparece por ej. 'ch', se toma como 'ch' y no como 'c' y 'h'
+    Como solo hay una ficha especial, se cuenta una vez
 
     Devuelve un diccionario con la cuenta de letras y un mensaje
     El mensaje esta vacio si la secuencia es correcta
@@ -411,7 +412,7 @@ def readWords( lan = 'es' ):
 
     for w in words:
 
-        wdict.append( (w.decode(), countLetters( w.decode(), lan )) )
+        wdict.append( (w.decode().lower(), countLetters( w.decode().lower(), lan )) )
 
 
         
@@ -743,63 +744,51 @@ def hist_palabras( s, words, lan = 'es', out = '' ):
 
 
 
-    # # Histograma
-
-    # print(global_score)
-
-    # count = col.Counter(global_score)
-
-    # print(count)
-
-    # for key, val in count:
-
-    #     print('{} {}'.format(val, count))
-
-    # print( [ x[0] for x in col.Counter(global_score)] )
-
-    # print( [ x[1] for x in col.Counter(global_score)] )
+    # Grafico de barras (cada bin esta centrado en un puntaje)
     
 
+    count = col.Counter(global_score)
+
+    bins, data = [], []
+
+    for c in sorted(count):
+
+        bins.append( c )
+
+        data.append( count[c])
+
+        
     
+    fig, axs = plt.subplots()
+
+    axs.grid()
     
-    # fig, axs = plt.subplots()
+    axs.bar( bins, data, color = 'r', align = 'center' )
 
-    # bins = [ x for x in set(global_score) ] # 1 barra por numero
+    axs.yaxis.set_major_locator(MaxNLocator(integer=True))
 
-    # print(bins)
-
-    # axs.grid()
+    axs.xaxis.set_major_locator(MaxNLocator(integer=True))
     
-    # axs.hist( global_score, bins, facecolor = 'r', rwidth = 0.9, align = 'left' )
+    axs.set_xlabel('Puntaje máximo')
 
-    # axs.set_xticks(bins[:-1])
+    axs.set_xlim(-1)
 
-    # # axs.set_xticks( [] )
+    axs.set_ylabel('Repeticiones')
 
-    # # axs.set_xticklabels( [ x for x in set(global_score) ] )
-
-    # axs.yaxis.set_major_locator(MaxNLocator(integer=True))
-
-    # axs.xaxis.set_major_locator(MaxNLocator(integer=True))
-    
-    # axs.set_xlabel('Puntaje máximo')
-
-    # axs.set_ylabel('Repeticiones')
-
-    # axs.set_title('Histograma para {} secuencias'.format(s))
+    axs.set_title('Histograma para {} secuencias'.format(s))
 
     
 
 
       
     
-    # if not out:
+    if not out:
     
-    #     plt.show()
+        plt.show()
 
-    # else:
+    else:
 
-    #     plt.savefig( out )
+        plt.savefig( out )
         
     
 
