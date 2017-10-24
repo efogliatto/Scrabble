@@ -491,18 +491,28 @@ def juego( secDict, words, lan = 'es' ):
 
                 score = score + fichas[l][1] * wDict[l]
 
-
-
                 
-                
-            msg = msg + '{} : {} puntos\n'.format(word[0], score)
 
 
             result[ word[0] ] = score
 
 
 
-    return result, msg
+
+            
+    # Ordenamiento de resultado, de mayor a menor puntaje
+
+    ordResult = []
+            
+    for it in sorted(result.items(), key = lambda x : x[1], reverse = True):
+
+        msg = msg + '{} : {} puntos\n'.format(it[0], it[1])
+
+        ordResult.append(   ( it[0], it[1] )  )
+            
+
+        
+    return ordResult, msg
 
 
 

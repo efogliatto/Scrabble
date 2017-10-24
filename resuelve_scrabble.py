@@ -108,8 +108,6 @@ if __name__ == "__main__":
 
         
         for n in range( args.n ):
-
-            global_result.append( ('','',0) )
             
 
             # Secuencia aleatoria (lista de secuencias si durante el sorteo salen fichas blank)
@@ -121,31 +119,34 @@ if __name__ == "__main__":
             
             for sec in rndSec:
 
-                result, msg = sc.juego( sec, words, args.lan )
-                
-                
-                # Se agrega solo el maximo puntaje para esta secuencia
+                result, msg2 = sc.juego( sec, words, args.lan )                            
 
                 if result:
 
-                    maxitem = sorted(result.items(), key = lambda x : x[1], reverse = True)[0]
-                    
-                    if maxitem[1] >= global_result[-1][2]  :
+                    global_result = global_result + result
 
-                        global_result[-1] = ( sc.dictToSec(sec), maxitem[0], maxitem[1] )
 
 
                         
             
 
-        msg = ''
-                    
-        for key in global_result:
+        sorted_results = sorted(global_result, key=lambda x : x[1], reverse = True) 
 
-            msg = msg + '{} : {} puntos\n'.format(key[1], key[2])
+        msg = '\n'        
+        
+        for elem in sorted_results:
 
-                
+            if elem[1] ==  sorted_results[0][1]:
 
+                msg = msg + '{} : {} puntos\n'.format(elem[0], elem[1])
+
+            else:
+
+                break
+
+                            
+
+            
         if not args.o:
         
             print( msg )
