@@ -68,8 +68,10 @@ if __name__ == "__main__":
         # Resuelve si no hay mensaje de error
         
         if not msg:
+
+            words = sc.readWords( args.lan )
         
-            result, msg = sc.juego( sdict, args.lan )
+            result, msg = sc.juego( sdict, words, args.lan )
 
 
         # Impresion de mensaje
@@ -99,7 +101,10 @@ if __name__ == "__main__":
 
     elif args.n != 0:
 
+
         global_result = []
+
+        words = sc.readWords( args.lan )
 
         
         for n in range( args.n ):
@@ -116,7 +121,7 @@ if __name__ == "__main__":
             
             for sec in rndSec:
 
-                result, msg = sc.juego( sec, args.lan )
+                result, msg = sc.juego( sec, words, args.lan )
                 
                 
                 # Se agrega solo el maximo puntaje para esta secuencia
@@ -159,4 +164,6 @@ if __name__ == "__main__":
 
         # Histograma. Puntaje total por tiro
 
-        sc.hist_palabras( args.s, args.lan, args.o )
+        words = sc.readWords( args.lan )
+
+        sc.hist_palabras( args.s, words, args.lan, args.o )

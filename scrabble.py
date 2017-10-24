@@ -6,6 +6,8 @@ import numpy as np
 
 import gzip, random
 
+from matplotlib.ticker import MaxNLocator
+
 
 
 
@@ -374,8 +376,53 @@ def dictToSec( sdict ):
 
 
 
+def readWords( lan = 'es' ):
 
-def juego( secDict, lan = 'es' ):
+    """
+    Lectura de la lista de palabras de diccionario.
+    Conteo de letras por palabras y retorno en lista de diccionarios
+
+    Devuelve lista de tuplas: (palabra segun idioma, diccionario de cuentas)
+    """
+
+
+    # Lectura de los diccionarios
+
+    if lan == 'es':
+
+        with gzip.open('palabras.words.gz', 'rb') as f:
+                
+            words = f.read().splitlines()
+            
+
+    elif lan == 'en':
+
+        with gzip.open('palabras_en.words.gz', 'rb') as f:
+                
+            words = f.read().splitlines()
+
+
+
+            
+    wdict = []
+
+    for w in words:
+
+        wdict.append( (w.decode(), countLetters( w.decode(), lan )) )
+
+
+        
+    return wdict
+
+
+
+            
+
+
+
+
+
+def juego( secDict, words, lan = 'es' ):
 
 
     """
@@ -384,108 +431,74 @@ def juego( secDict, lan = 'es' ):
     Devuelve mensaje con info
     """
 
-    msg = ''
+    msg = '\n'
 
     
     # Resolucion del juego si no hay mensaje de error
 
     result = {}
 
-
-    # Lectura de la lista de palabras
-    
-    if not msg:
-
+              
         
-        if lan == 'es':
+    for word in words:
 
-            with gzip.open('palabras.words.gz', 'rb') as f:
-                
-                words = f.read().splitlines()
+        count = 0
 
-                
+        find = True
 
-        elif lan == 'en':
+        wDict = word[1]
 
-            with gzip.open('palabras_en.words.gz', 'rb') as f:
-                
-                words = f.read().splitlines()
+
+        for l in wDict.keys():
 
                 
+            if find == False:
 
-        else:
-
-            msg = msg + '  [ERROR]  Idioma ' + lan + ' no disponible\n\n'
-
-
-
-
-
-    # B\'usqueda de palabras
- 
-    if not msg:
-
+                break
                 
-        
-        for w in words:
 
-            count = 0
+            if l in secDict.keys():
 
-            find = True
-
-            wDict = countLetters( w.decode(), lan )
-
-
-            for l in wDict.keys():
-
-                if l in secDict.keys():
-
-                    if secDict[l] >= wDict[l]:
+                if secDict[l] >= wDict[l]:
                         
-                        count = count + 1
+                    count = count + 1
 
-                    else:
-
-                        find = False
-
-                        
-                        
                 else:
 
                     find = False
 
+                        
+                        
+            else:
+
+                find = False
+
 
 
                     
-            # Si la cantidad de letras coincidentes es mayor a dos, y todas las letras de wDict estan en secDict, entonces la palabra w es valida
+        # Si la cantidad de letras coincidentes es mayor a dos, y todas las letras de wDict estan en secDict, entonces la palabra w es valida
                     
-            if count > 1  and  find == True:
+        if count > 1  and  find == True:
 
 
-                # Puntaje para la palabra
+            # Puntaje para la palabra
 
-                score = 0
+            score = 0
 
-                fichas, alphabet = fichas_lan( lan )
+            fichas, alphabet = fichas_lan( lan )
 
-                for l in wDict.keys():
+            for l in wDict.keys():
 
-                    score = score + fichas[l][1] * wDict[l]
+                score = score + fichas[l][1] * wDict[l]
 
 
 
                 
                 
-                msg = msg + '{} : {} puntos\n'.format(w.decode(), score)
-
-                result[w.decode()] = score
-
-                    
-            
-        
+            msg = msg + '{} : {} puntos\n'.format(word[0], score)
 
 
-        
+            result[ word[0] ] = score
 
 
 
@@ -666,7 +679,7 @@ def secuencia_rnd( lan = 'es' ):
 
 
 
-def hist_palabras( s, lan = 'es', out = '' ):
+def hist_palabras( s, words, lan = 'es', out = '' ):
 
     """
     Realiza un histograma con el puntaje m\'aximo de s tiros aleatorios
@@ -674,7 +687,9 @@ def hist_palabras( s, lan = 'es', out = '' ):
     """
 
     
-    global_score = []   
+    global_score = []
+
+    
 
         
     for n in range( s ):
@@ -691,7 +706,7 @@ def hist_palabras( s, lan = 'es', out = '' ):
             
         for sec in rndSec:
 
-            result, msg = juego( sec, lan )
+            result, msg = juego( sec, words, lan )
                 
                 
             # Se agrega solo el maximo puntaje para esta secuencia
@@ -725,6 +740,10 @@ def hist_palabras( s, lan = 'es', out = '' ):
     
     axs.hist( global_score, nbins, facecolor = 'r', rwidth = 0.9 )
 
+    axs.yaxis.set_major_locator(MaxNLocator(integer=True))
+
+    axs.xaxis.set_major_locator(MaxNLocator(integer=True))
+    
     axs.set_xlabel('Puntaje máximo')
 
     axs.set_ylabel('Repeticiones')
