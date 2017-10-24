@@ -454,12 +454,15 @@ def juego( secDict, words, lan = 'es' ):
 
         for l in wDict.keys():
 
-                
+
+            # Break para evitar busquedas innecesarias
+            
             if find == False:
 
                 break
-                
 
+
+            
             if l in secDict.keys():
 
                 if secDict[l] >= wDict[l]:
@@ -470,8 +473,7 @@ def juego( secDict, words, lan = 'es' ):
 
                     find = False
 
-                        
-                        
+                                                
             else:
 
                 find = False
@@ -479,10 +481,10 @@ def juego( secDict, words, lan = 'es' ):
 
 
                     
-        # Si la cantidad de letras coincidentes es mayor a dos, y todas las letras de wDict estan en secDict, entonces la palabra w es valida
+        # Si todas las letras de wDict estan en secDict, entonces la palabra w es valida
                     
         if count > 1  and  find == True:
-
+        
 
             # Puntaje para la palabra
 
