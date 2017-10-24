@@ -788,7 +788,17 @@ def hist_palabras( s, words, lan = 'es', out = '' ):
 
     else:
 
-        plt.savefig( out )
+        if( [x for x in ['eps','png','jpg','svg','pdf'] if x in out] ):
+
+            plt.savefig( out )
+
+        else:
+
+            with open(out, 'w') as f:
+
+                for b,d in zip(bins, data):
+                
+                    f.write( '{} {}\n'.format(b,d) )
         
     
 
