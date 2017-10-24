@@ -21,7 +21,7 @@ def fichas_lan( lan = 'es' ):
     """
     Selecci\'on de fichas de acuerdo al idioma
 
-    Devuelve las fichas y un alfabeto (ya ordenado)
+    Devuelve las fichas y un alfabeto ordenado (por si se necesita algún odenamiento específico)
     """
 
     fichas = {}
@@ -170,12 +170,13 @@ def diagrama( lan = 'es', out = '' ):
 
 
 
+
 def countLetters( word, lan = 'es' ):
 
     """
     Conteo de letras en word y asignacion a diccionario
 
-    Devuelve diccionario con cantidad de apariciones
+    Devuelve diccionario con cantidad de apariciones por letra
     """
 
 
@@ -428,7 +429,7 @@ def juego( secDict, words, lan = 'es' ):
     """
     Resolucion del juego en idioma lan, usando las letras del diccionario secDict
 
-    Devuelve mensaje con info
+    Devuelve mensaje con info y lista de tuplas: (palabra, puntaje)
     """
 
     msg = '\n'
@@ -448,6 +449,8 @@ def juego( secDict, words, lan = 'es' ):
 
         wDict = word[1]
 
+
+        # La idea de resolucion es la siguiente: para cada palabra de words, se verifica que secDict contenga la cantidad de letras necesarias
 
         for l in wDict.keys():
 
@@ -698,9 +701,6 @@ def hist_palabras( s, words, lan = 'es', out = '' ):
 
     
     global_score = []
-
-    
-
         
     for n in range( s ):
           
@@ -723,7 +723,7 @@ def hist_palabras( s, words, lan = 'es', out = '' ):
 
             if result:
 
-                maxItem = max( result.values() )
+                maxItem = result[0][1]
                     
                 if maxItem >= maxScore  :
 
