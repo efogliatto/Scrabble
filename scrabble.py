@@ -94,13 +94,13 @@ def diagrama( lan = 'es', out = '' ):
 
     # Creacion de la figura inicial
 
-    fix, ax = plt.subplots()
+    fix, ax = plt.subplots(facecolor='white')
 
     ax.axis( 'off' )
 
-    ax.set_xlim((0,nx))
+    ax.set_xlim( (-1,nx+1) )
 
-    ax.set_ylim((0,ny))
+    ax.set_ylim( (-1,ny+1) )
 
     plt.gca().set_aspect('equal', adjustable='box')
 
@@ -115,9 +115,9 @@ def diagrama( lan = 'es', out = '' ):
 
     for i in range(nx+1):
 
-        ax.axvline( i, color = 'silver' )
+        ax.vlines( i, color = 'silver', ymin = 0, ymax = ny )
 
-        ax.axhline( i, color = 'silver' )
+        ax.hlines( i, color = 'silver', xmin = 0, xmax = nx )
 
 
 
